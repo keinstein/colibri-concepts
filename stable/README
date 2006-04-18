@@ -1,0 +1,257 @@
+-------------------------------------------------------------------------------
+ $Id: README,v 1.1.1.1 1998/02/23 15:22:25 lindig Exp $
+-------------------------------------------------------------------------------
+
+Description
+-----------
+
+Concepts calculates a lattice of concepts from a binary relation and
+outputs the result in a user specified way. Concept lattices are also
+known as Galois lattices. 
+
+What are concepts and what is a concept lattice? A binary relation
+over objects and associated attributes may be depicted as a context
+table:
+
+objects		attributes
+-------------------------------------------------------------
+chmod:		change file mode permission ;
+chown:		change file group owner;
+fstat:		get file status ;
+fork:		create new process ;
+chdir:		change directory ;
+mkdir:		create directory new ;
+open:		create file open read write;
+read:		file input read ;
+rmdir:		directory file remove ;
+write:		file output write ;
+creat:		create file new ;
+access:		access check file ;
+
+Here objects are Unix system calls and attributes are associated terms
+describing a system call. Any set of objects shares a (possibly empty)
+set of common attributes: the set {chdir,mkdir} shares {directory} for
+example. The same is true for attribute sets which share common
+objects. So every set of objects determines a set of common attributes
+and every set of attributes determines a set of common objects,
+forming a pair of object and attribute set. A pair (O,A) of such two
+sets is called a concept, if the following holds: the set of
+attributes common to the objects in O is A and the set of objects
+commonly shared by the attributes in A is O. Every binary relation
+induces such concepts and the program calculates them using Ganter's
+algorithm.
+
+All concepts from a binary relation are (partially) ordered and even
+more, form a lattice. Concepts are ordered by (O1,A1) <= (O2,A2) if
+and only if A1 <= A2 holds. Concepts computes for every concept its
+super- and subconcepts and permits to output the lattice
+structure. The complete set of concepts from the example above is
+shown below. Each concept contains a unique number, the set of objects
+and the set of attributes.
+
+{0 {access creat write rmdir read open mkdir chdir fork fstat chown
+ chmod} {}}
+{1 {access creat write rmdir read open fstat chown chmod} {file}}
+{2 {access} {file check access}}
+{3 {creat open mkdir fork} {create}}
+{4 {creat open} {file create}}
+{5 {creat mkdir fork} {new create}}
+{6 {creat} {file new create}}
+{7 {write open} {file write}}
+{8 {write} {file write output}}
+{9 {rmdir mkdir chdir} {directory}}
+{10 {rmdir} {file remove directory}}
+{11 {read open} {file read}}
+{12 {read} {file read input}}
+{13 {open} {file create write read open}}
+{14 {mkdir} {new create directory}}
+{15 {chdir chown chmod} {change}}
+{16 {chdir} {directory change}}
+{17 {fork} {new create process}}
+{18 {fstat} {file status get}}
+{19 {chown chmod} {file change}}
+{20 {chown} {file change owner group}}
+{21 {chmod} {file change permission mode}}
+{22 {} {file check access new create write output remove directory
+ read input open change process status get owner group permission
+ mode}}
+
+
+Concepts reads in a binary relation in the format of the example above
+and outputs it it a user specified way. It also can create output to
+be used as input for graphplace(1), a graph layouter capable of
+creating PostScript output, to print the concept lattice.
+
+
+Requirements for Installation
+-----------------------------
+
+You need a C compiler and Lex and Yacc tools. The actual configuration
+is handled through GNU autoconf so it's quite flexible. 
+
+Installation
+------------
+
+Please read the generic INSTALL file how to compile and install
+Concepts. 
+
+Performance
+-----------
+
+An input file consisting of 200 object with each object having 5
+attributes is processed in about 8 sec (SparcStation ELC) resulting in
+a concept lattice of 581 nodes. 
+
+The PostScript file doc/time.ps contains a graph which shows some
+execution times for various input.
+
+Quick Test
+----------
+
+There is a very naive test. You can run it by simply typing 'make
+test'. Concepts computes some data and compares it to previously
+computed results. Because the actual output depends on a string hash
+function on some systems the output may be different from the
+previously computed results although it's correct. In this case
+compare the file "test.old" and "test.new" manually; if the calculated
+concepts in both files are equal everything is fine.
+
+How to Use
+----------
+
+There is a manual page concepts.1 in nroff format. The installation
+procedure places it in an appropriate place. To format and view the
+document manually just type:
+
+		nroff -man concepts.1 | more
+
+You can find an example "example.con" input file in the doc/
+directory. The calculate its concepts type:
+
+		concepts -c example.con
+
+FTP
+---
+
+The latest version can be found at: 
+
+		ftp.ips.cs.tu-bs.de:pub/local/softech/misc
+
+Bugs
+----
+
+Please report bugs, improvements, ports to other platforms and all
+forms of comments to Christian Lindig <lindig@ips.cs.tu-bs.de>.
+
+Copyleft
+--------
+
+This program is published under the GNU copyleft - see the file
+COPYING for details. 
+
+No Warranty
+-----------
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+History
+-------
+
+0.1 -> 0.1a
+
+	* identifiers now may contain ()!| as well.
+
+0.1a -> 0.1b
+
+	* SetFirst() and SetNext() improved. This results in
+	  a notably speed up since both are called very often.
+        * Optimized compilation speeds up concepts(1) by 400%
+	* A small program (called big :) for generating random 
+	  input files added.
+
+0.1b ->	0.1c
+	
+	* For all concepts the minimized sets of objects and
+	  attributes are calculated. This clarifies the output.
+
+0.1c -> 0.2
+
+	* Concepts allows to compute the "arrow" relation 
+	  between all objects and attributes that are 
+	  not related in in the input relation. 
+
+0.2 -> 0.2a
+
+	* The arrow relation was not calculated correctly. The problem
+	  is hopefully fixed now.
+
+0.2a -> 0.2b
+
+	* In graphs produced with '-s graph' concepts are labeled with
+	  objects and attributes.
+
+0.2b -> 0.3
+
+	* User interface totally rewritten. Less but more flexible
+	  options and user specified output formats.
+
+	* Code should be far more portable. Automatic configuration
+	  through GNU autoconf.
+
+	* arrow.c totally rewritten. Now much more efficent.
+
+0.3 -> 0.3b
+
+	* configure.in was missing from the distribution.
+
+	* install.sh was not a shell script at all.
+
+0.3b -> 0.3c
+
+	* bug removed that caused concepts to dump core
+	  in case of some parse errors.
+
+0.3c -> 0.3d
+
+	* Default output format changed
+	* Input syntx changed: identifier my now start with numbers,
+	  parentheses and other symbols which are also allowed in C 
+	  indentifiers.
+	
+	  Objects may have an empty list of associated attributes.
+
+See Also
+--------
+
+The Algorithm used to compute all concepts is presented in:
+
+B. Ganther, R.  Wille, K.E.  Wolff (Eds.), Beitraege zur
+Begriffsanalyse (Contributions to Concept Analysis),
+1987,BI-Wissenschafts-Verlag, Mannheim, Germany
+
+The Arrow relation is defined in:
+
+R. Wille, B. Ganther, Formale Begriffsanalyse - Dritter Teil:
+Mathematische Theorie der Formalen Begriffsanalyse, Course Notes, 
+1993, Damstadt, Germany.
+
+Applications of concept analysis:
+
+M. Krone, G. Snelting: On the Inference of Configuration Structures from
+Source Code. Proc. 16th International Conference on Software
+Engineering,   May 1994, IEEE Comp. Soc. Press, S. 49 - 57. 
+ftp://ftp.ips.cs.tu-bs.de/pub/local/softech/papers/infer-config.ps.gz
+
+Author
+------
+
+Christian  Lindig  (lindig@ips.cs.tu-bs.de),  
+Institute  for Programming Languages 
+Technical University of Braunschweig
+D-38106 Braunschweig
+Germany.
+
+

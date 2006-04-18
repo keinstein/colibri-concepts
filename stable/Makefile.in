@@ -1,0 +1,203 @@
+# -*- Indented-Text -*-
+# ----------------------------------------------------------------------------
+# $Id: Makefile.in,v 1.1.1.1 1998/02/23 15:22:25 lindig Exp $
+# ----------------------------------------------------------------------------
+
+# CONCEPTS
+# Copyright (C) 1994 Technical University of Braunschweig, Germany
+# Written by Christian Lindig (lindig@ips.cs.tu-bs.de)
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+# ---------------------------------------------------------------------------
+# NAME and VERSION
+# ---------------------------------------------------------------------------
+
+NAME =		@NAME@
+VERSION =	@VERSION@
+
+# ---------------------------------------------------------------------------
+# system configuration
+# ---------------------------------------------------------------------------
+
+
+VPATH =		.
+srcdir =	$(VPATH)
+
+CC =		@CC@
+CFLAGS =	@CFLAGS@
+LDFLAGS =	-g
+
+INSTALL =	@INSTALL@
+INSTALL_PROGRAM =	@INSTALL_PROGRAM@
+INSTALL_DATA =	@INSTALL_DATA@
+
+LEX =		@LEX@
+LEXLIB =	@LEXLIB@
+
+YACC =		@YACC@
+YFLAGS =	-d 
+
+DEFS =		@DEFS@
+LIBS =		@LIBS@ $(LEXLIB)
+
+RM =		@RM@ -f
+MV =		@MV@
+DIFF =		@DIFF@
+TAR =		@TAR@
+GZIP =		@GZIP@ -f
+
+DEPEND =	$(CC) @CC_M@
+
+# ---------------------------------------------------------------------------
+# Installation
+# ---------------------------------------------------------------------------
+
+prefix =	/usr/local
+exec_prefix =	$(prefix)
+
+bindir =	$(exec_prefix)/bin
+man1dir =	$(prefix)/man/man1
+man1ext =	.1
+
+# ---------------------------------------------------------------------------
+# SHELL
+# ---------------------------------------------------------------------------
+
+SHELL =		/bin/sh
+
+# ---------------------------------------------------------------------------
+# Rules
+# ---------------------------------------------------------------------------
+
+.c.o:
+		$(CC) -c $(CPPFLAGS) $(DEFS) $(CFLAGS) $<
+
+# ---------------------------------------------------------------------------
+# 
+# ---------------------------------------------------------------------------
+
+
+SRCS =		concept.c hash.c list.c main.c panic.c print.c\
+		relation.c set.c context.c input.c arrow.c lib.c
+
+HDRS =		hash.h list.h concept.h input.h print.h\
+		relation.h context.h panic.h set.h arrow.h\
+		lib.h defines.h
+
+OBJS =		concept.o hash.o list.o main.o panic.o print.o\
+		relation.o set.o context.o input.o arrow.o\
+		scanner.o parser.o lib.o
+
+DISTFILES =	README INSTALL COPYING Makefile.in scanner.lex parser.yacc\
+		concepts.man test.in test.old install.sh\
+		configure configure.in config.h.in $(SRCS) $(HDRS) doc\
+		config.h Makefile version.h version.h.in
+
+#
+# main target 
+#
+
+concepts:	$(OBJS)
+		$(CC) $(LDFLAGS) -o concepts $(OBJS) $(LIBS)
+
+#
+# generate scanner and parser from spsecifications
+#
+
+scanner.c:	scanner.lex
+		$(LEX) $(LFLAGS) scanner.lex
+		$(MV) lex.yy.c scanner.c
+
+parser.h:	parser.c
+parser.c:	parser.yacc
+		$(YACC) $(YFLAGS) parser.yacc 
+		$(MV) y.tab.c parser.c
+		$(MV) y.tab.h parser.h
+
+#
+# dependencies for autoconf related files
+#
+
+Makefile:	Makefile.in configure
+		configure
+
+configure:	configure.in
+		autoconf
+
+# ---------------------------------------------------------------------------
+# Phony Targets
+# ---------------------------------------------------------------------------
+
+install:	concepts concepts.man
+		$(INSTALL_PROGRAM) concepts $(bindir)/$(binprefix)
+		$(INSTALL_DATA) concepts.man $(man1dir)/concepts$(man1ext)
+
+tags:		$(SRCS)
+		etags $(SRCS)
+
+clean:		
+		$(RM) $(OBJS) scanner.c parser.c parser.h Makefile.bak
+
+distclean:	clean
+		$(RM) concepts config.h config.log config.status
+		$(RM) Makefile config.cache
+
+test:		concepts test.in test.old
+		@./concepts -c -o test.new test.in 
+		@if $(DIFF) test.old test.new ;\
+		then echo "test passed" ;\
+		else echo "test failed" ;\
+		fi
+
+dist:		$(DISTFILES)
+		$(TAR) -cvf $(NAME)-$(VERSION).tar $(DISTFILES)
+		$(GZIP) $(NAME)-$(VERSION).tar
+
+
+#
+# determine dependencies using "cc -M"
+#
+
+depend:		$(SRCS) scanner.c parser.c
+		(cp Makefile Makefile.bak ;\
+		sed '/^# DO NOT DELETE/q' Makefile.bak > Makefile ;\
+		$(DEPEND) $(SRCS) scanner.c parser.c >> Makefile)
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+
+concept.o: concept.c config.h defines.h panic.h list.h set.h\
+	   relation.h concept.h
+hash.o: hash.c config.h defines.h panic.h hash.h
+list.o: list.c config.h defines.h panic.h list.h
+main.o: main.c config.h defines.h version.h panic.h list.h hash.h\
+	set.h relation.h   concept.h context.h arrow.h input.h print.h
+panic.o: panic.c config.h defines.h panic.h
+print.o: print.c config.h defines.h panic.h set.h list.h hash.h\
+	 relation.h concept.h context.h arrow.h print.h
+relation.o: relation.c config.h defines.h panic.h set.h relation.h
+set.o: set.c config.h defines.h panic.h set.h
+context.o: context.c config.h defines.h panic.h list.h hash.h \
+	   set.h relation.h concept.h context.h 
+input.o: input.c config.h defines.h panic.h hash.h list.h set.h \
+	 relation.h   concept.h context.h input.h
+arrow.o: arrow.c config.h defines.h panic.h list.h hash.h set.h \
+	 relation.h   concept.h context.h arrow.h
+lib.o: lib.c config.h defines.h lib.h
+scanner.o: scanner.c config.h defines.h panic.h hash.h list.h \
+	   set.h relation.h   concept.h context.h input.h parser.h
+parser.o: parser.c config.h defines.h list.h set.h hash.h\
+	  relation.h concept.h context.h input.h
+
