@@ -1,0 +1,353 @@
+%!PS
+%% number of objects: 12
+%% number of attributes: 20
+%% number of concepts: 23
+%%Creator: graphplace
+%%For: lindig@infbsst6 (Christian Lindig,,0531347503)
+%%Title: input file example.gp
+%%BoundingBox: 0 0 595.306 841.89
+%%CreationDate: Thu Mar 23 08:58:16 1995
+
+
+%%BeginProlog
+% Prologue to serve general graph drawing in conjunction with 'graphplace'.
+% This program produces a more extended header in front of this prologue.
+% Copyright: Jos van Eijndhoven
+%            jos@es.ele.tue.nl
+
+% )pop
+% ^^^^ this pop is a dirty trick for a local troff version....
+
+%%
+%% changes by Christian Lindig (lindig@ips.cs.tu-bs.de):
+%%
+%% - nodes and edges are all black
+%% - circles smaller (4 pt)
+%% - annotation font min. 5 pts high
+%%
+
+% global parameters: (might be overwritten by later (appl generated) data)
+			      % default colors chosen for proper B&W printing 
+/nodecolor [0 0 0] def        % set RGB color of node
+/edgecolor [0 0 0] def        % set RGB color of edge
+/textcolor [0 0 0] def        % set RGB color of annotation text
+/nodefill true def            % draw nodes filled? (values 'true' or 'false')
+/minannotationheight 5 def    % minimum pointsize for scaled text
+/maxannotationheight 22 def   % maximum pointsize for scaled text
+/makearrows true def          % override with false, for undirected graphs
+/makecurves false def	      % draw edges slightly curved, reducing overlap
+
+			      % the following defaults are overwritten
+			      % if a call to 'nodedist' is made:
+/noderadius 4 def
+/linewidth 0.25 def
+/annotationheight 9 def       % default pointsize for annotation text
+/Helvetica-Bold findfont annotationheight scalefont /annotationfont exch def
+
+%----------------------------------------------------------------------
+% the drawing routines
+
+% MAX    call: <x> <y> max
+%        result: <max(x,y)>
+/max {2 copy gt {pop} {exch pop} ifelse} def
+/min {2 copy lt {pop} {exch pop} ifelse} def
+
+% CIRCLEPATH    call: <x> <y> circlepath
+%             result: draws circle with center <x,y-pos>, radius <rad>.
+/circlepath {
+	nodecolor aload pop setrgbcolor
+	newpath 
+	noderadius 0 360 arc
+	nodefill
+	{	fill
+	}{	linewidth setlinewidth stroke
+	} ifelse
+} def
+
+% SHOWNODEANNOTATION
+%          call:   [[[<loname>] <centername>] <hiname>] <x> <y> nodeannotate 
+%        result:   draws up to two names around <x,y>
+/nodeannotate {
+	annotationfont setfont
+	count 3 ge			  % draw hiname above node
+	{	1 index 1 index           % new <x,y> pair on top
+		annotationheight add      % move name  up
+		noderadius add
+		5 -1 roll centertext
+	} if
+	count 3 ge			  % draw centername in node
+	{	1 index 1 index           % new <x,y> pair on top
+		5 -1 roll centertext
+	} if
+	count 3 ge			  % draw loname below node
+	{	annotationheight sub      % move name down
+		noderadius sub
+		3 -1 roll centertext
+	} {pop pop} ifelse
+} def
+
+% COORDBYRATIO
+%          call:   <x1> <y1> <dx> <dy> <factor> coordbyratio
+%        result:   <x1 + dx*ratio> <y1 + dy*ratio>
+/coordbyratio {
+	makecurves
+	{	% slighlty move the resulting point, to fit curve
+		% just a somewhat rough estimate of where the spline is...
+		% add correction factor on top of stack
+		dup dup 1 exch sub mul 0.22 mul
+		% add to x the correction*dy
+		dup 3 index mul 7 -1 roll add 6 1 roll
+		% sub from y the correction*dx
+		3 index mul 4 -1 roll exch sub 3 1 roll
+	} if
+	dup 3 1 roll mul
+	3 1 roll mul         %now  <x1> <y1> <dy*f> <dx*f>
+	4 -1 roll add
+	3 1 roll add
+} def
+
+% EDGEANNOTATE
+%          call:   [[<1name>] <2name>] <x1> <y1> <x2> <y2> edgeannotate 
+%        result:   draws names around edge
+/edgeannotate {
+	annotationfont setfont
+
+	%change x1 y1 x2 y2 into x1 y1 dx dy
+	2 index sub exch 3 index sub exch
+
+	count 5 ge
+	{	3 index 3 index 3 index 3 index % copy x1,y1,dx,dy
+		edgelength 0 eq
+		{	pop pop exch noderadius 3.8 mul sub exch noderadius add
+		}{	0.7 coordbyratio
+		} ifelse
+		7 -1 roll centertext
+	} if
+
+	count 5 ge
+	{	edgelength 0 eq
+		{	pop pop exch noderadius 3.8 mul sub exch noderadius sub
+		}{	0.3 coordbyratio
+		} ifelse
+		3 -1 roll centertext
+	} {pop pop pop pop} ifelse
+
+} def
+
+% CENTERTEXT    call: <x> <y> <text> centertext
+%             result: draws text centered around <x_pos,y_pos>.
+/centertext {
+	dup measuretext    % results in <x> <y> <text> <dx> <dy> 
+
+	4 -1 roll exch sub
+	exch 4 -1 roll exch sub
+	exch               % results in <text> <x-dx> <y-dy>
+
+
+	% make a small white area around the chars to free them from background
+	3 copy moveto
+	annotationheight 10 div 1 max setlinewidth % size of white border
+	1 setgray
+	false charpath stroke
+	% now draw chars in black
+	textcolor aload pop setrgbcolor
+	moveto show
+} def
+
+% MEASURETEXT   call: <text> measuretext
+%	  result: <dx> <dy> towards the text center
+/measuretext {
+	gsave
+	newpath 0 0 moveto
+	true charpath pathbbox 
+	3 -1 roll add 2 div
+	3 1 roll add 2 div
+	exch
+	grestore
+} def
+
+% MAKE_ARROW    call: <xfrom> <yfrom> <xto> <yto> make_arrow
+%	      result: draws arrow
+/make_arrow {
+
+	gsave
+	linewidth setlinewidth
+	edgecolor aload pop setrgbcolor
+
+	% translate origin to arrow dest (removes <xyto>, updates <xyfrom>)
+	4 -1 roll 2 index sub
+	4 -1 roll 2 index sub
+	4 2 roll
+	translate
+
+	% draw arrow (now on stack: <xfrom> <yfrom>)
+	% determine edge length
+	2 copy
+	dup mul exch dup mul add sqrt /edgelength exch def
+	% leaves on stack: <xfrom> <yfrom>
+
+	edgelength 0 eq
+	{	% draw zero-length (self-)edge as circle
+		moveto
+		noderadius -4 mul 0 moveto currentpoint
+		noderadius -2 mul 0 noderadius 2 mul 180 331 arc
+                moveto
+		noderadius -2 mul 0 noderadius 2 mul 180 29 arcn
+
+		makearrows
+		{	% current position is at nodecircle edge
+			% stack is empty
+			2 setlinejoin
+			currentpoint translate
+			20 rotate
+			0 noderadius 0.6 mul rlineto
+			0 0 moveto
+			30 rotate
+			0 noderadius 0.6 mul rlineto
+		} if
+	}
+	{
+		% move origin to boundary of dest node
+		2 copy
+		exch edgelength div noderadius mul
+		exch edgelength div noderadius mul
+		% leaves on stack: <xfrom> <yfrom> <dx> <dy>
+		2 copy translate
+	
+		% subtract 2*dx{y} from x{y} : once for orig, once for dest
+		4 -1 roll 2 index 2 mul sub
+		4 -1 roll 2 index 2 mul sub
+		% leaves on stack <dx> <dy> <xfrom-2dx> <yfrom-2dy>
+	
+		% draw edge without arrow point
+		0 0 moveto
+		makecurves
+		{	2 copy
+			-0.1 mul 3 index 0.5 mul add exch
+			0.1 mul 2 index 0.5 mul add
+			2 copy
+			6 -2 roll
+			curveto
+			0 0 moveto
+			11 rotate
+		}
+		{	lineto 
+		} ifelse
+		% <dx> <dy> remains on stack
+	
+		makearrows
+		{	0.6 mul exch 0.6 mul exch
+			0 0 moveto 15 rotate 2 copy lineto
+			0 0 moveto -30 rotate lineto
+		}
+		{	pop pop
+		} ifelse
+	} ifelse
+	stroke
+	grestore
+} def
+
+%-----------------------------------------------------------------------
+% and now for the procedures that are to be used in the input file:
+
+% NODE  call: [[[<loname>] <centername>] <hiname>] <x> <y> node
+%     result:   draws circle with center at <x,y>, annotates optional names. 
+/node {
+	2 copy circlepath
+	nodeannotate
+} def
+
+% EDGE  call: [[startname>] <endname>] <x_start> <y_start> <x_end> <y_end> edge
+%     result: draws edge from <x,y_start> to <x,y_end> with labels
+/edge {
+	4 copy          % push 4 new coords on top
+	make_arrow
+	% now stack still as original
+	edgeannotate
+} def
+
+% UNITS   call: <xunit> <yunit> nodedist
+%	result: sets decent values for noderadius, linewidth, text height
+%	xunit and yunit are the typical horizontal and vertical node distances
+/nodedist {
+	abs exch abs min
+	dup /noderadius exch 8 div def
+	/linewidth exch 90 div 0.25 max def
+	/annotationheight noderadius % set scaled textheight, however clip:
+		minannotationheight max maxannotationheight min def
+	/Helvetica-Bold findfont annotationheight scalefont
+		/annotationfont exch def
+	noderadius annotationheight pop pop
+} def
+
+%%EndProlog
+
+/makecurves false def
+/makearrows false def
+
+()  (0) ()  291.2 757.7 node
+()  (1) (file)  265.5 589.3 node
+(access)  (2) (check access)  317 420.9 node
+()  (3) (create)  381.3 589.3 node
+()  (4) ()  368.4 420.9 node
+()  (5) (new)  471.4 420.9 node
+(creat)  (6) ()  484.3 252.6 node
+()  (7) (write)  162.5 420.9 node
+(write)  (8) (output)  162.5 252.6 node
+()  (9) (directory)  111 420.9 node
+(rmdir)  (10) (remove)  59.53 252.6 node
+()  (11) (read)  214 420.9 node
+(read)  (12) (input)  214 252.6 node
+(open)  (13) (open)  265.5 252.6 node
+(mkdir)  (14) ()  317 252.6 node
+()  (15) (change)  317 589.3 node
+(chdir)  (16) ()  111 252.6 node
+(fork)  (17) (process)  535.8 252.6 node
+(fstat)  (18) (status get)  265.5 420.9 node
+()  (19) ()  419.9 420.9 node
+(chown)  (20) (owner group)  432.8 252.6 node
+(chmod)  (21) (permission mode)  381.3 252.6 node
+()  (22) ()  317 84.19 node
+
+291.2 757.7 265.5 589.3 edge
+291.2 757.7 381.3 589.3 edge
+291.2 757.7 111 420.9 edge
+291.2 757.7 317 589.3 edge
+265.5 589.3 317 420.9 edge
+265.5 589.3 368.4 420.9 edge
+265.5 589.3 162.5 420.9 edge
+265.5 589.3 59.53 252.6 edge
+265.5 589.3 214 420.9 edge
+265.5 589.3 265.5 420.9 edge
+265.5 589.3 419.9 420.9 edge
+317 420.9 317 84.19 edge
+381.3 589.3 368.4 420.9 edge
+381.3 589.3 471.4 420.9 edge
+368.4 420.9 484.3 252.6 edge
+368.4 420.9 265.5 252.6 edge
+471.4 420.9 484.3 252.6 edge
+471.4 420.9 317 252.6 edge
+471.4 420.9 535.8 252.6 edge
+484.3 252.6 317 84.19 edge
+162.5 420.9 162.5 252.6 edge
+162.5 420.9 265.5 252.6 edge
+162.5 252.6 317 84.19 edge
+111 420.9 59.53 252.6 edge
+111 420.9 317 252.6 edge
+111 420.9 111 252.6 edge
+59.53 252.6 317 84.19 edge
+214 420.9 214 252.6 edge
+214 420.9 265.5 252.6 edge
+214 252.6 317 84.19 edge
+265.5 252.6 317 84.19 edge
+317 252.6 317 84.19 edge
+317 589.3 111 252.6 edge
+317 589.3 419.9 420.9 edge
+111 252.6 317 84.19 edge
+535.8 252.6 317 84.19 edge
+265.5 420.9 317 84.19 edge
+419.9 420.9 432.8 252.6 edge
+419.9 420.9 381.3 252.6 edge
+432.8 252.6 317 84.19 edge
+381.3 252.6 317 84.19 edge
+showpage

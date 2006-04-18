@@ -1,0 +1,26 @@
+%
+% input to concepts(1) for a very simple regression test :)
+%
+
+commands.o :  	dep.h commands.h file.h variable.h job.h  ;
+job.o :  	commands.h job.h file.h variable.h  ;
+dir.o :  	config.h  ;
+file.o :  	commands.h dep.h file.h variable.h  ;
+misc.o :  	dep.h  ;
+main.o :  	commands.h dep.h file.h variable.h job.h getopt.h  ;
+read.o :  	commands.h dep.h file.h variable.h glob.h  ;
+remake.o :  	commands.h job.h dep.h file.h  ;
+rule.o :  	config.h commands.h dep.h file.h variable.h rule.h  ;
+implicit.o :  	rule.h dep.h file.h  ;
+default.o :  	rule.h dep.h file.h commands.h variable.h  ;
+variable.o :  	commands.h variable.h dep.h file.h  ;
+expand.o :  	config.h commands.h file.h variable.h  ;
+function.o :  	variable.h dep.h commands.h job.h  ;
+vpath.o :  	file.h variable.h  ;
+ar.o :  	file.h dep.h  ;
+signame.o :  	config.h signame.h  ;
+remote-stub.o : commands.h  ;
+getopt.o :  	config.h getopt.h  ;
+getopt1.o : 	getopt1.c config.h getopt.h  ;
+getloadavg.o :  config.h  ;
+empty.o:	;

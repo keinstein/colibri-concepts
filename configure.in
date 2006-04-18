@@ -1,0 +1,80 @@
+dnl
+dnl $Id: configure.in,v 1.3 1998/02/25 16:22:05 lindig Exp $
+dnl
+dnl Process this file with autoconf to produce a configure script.
+dnl
+dnl CONCEPTS
+dnl Copyright (C) 1994 Technical University of Braunschweig, Germany
+dnl Written by Christian Lindig (lindig@ips.cs.tu-bs.de)
+dnl 
+dnl This program is free software; you can redistribute it and/or modify
+dnl it under the terms of the GNU General Public License as published by
+dnl the Free Software Foundation; either version 2 of the License, or
+dnl (at your option) any later version.
+dnl 
+dnl This program is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+dnl GNU General Public License for more details.
+dnl 
+dnl You should have received a copy of the GNU General Public License
+dnl along with this program; if not, write to the Free Software
+dnl Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+dnl
+AC_INIT(set.h)
+AC_CONFIG_HEADER(config.h)
+dnl -----------------------------------------------------------------------
+dnl VERSION
+dnl -----------------------------------------------------------------------
+AC_MSG_CHECKING(for name and version number)
+NAME=concepts
+VERSION=0.3e
+dnl -----------------------------------------------------------------------
+AC_SUBST(VERSION)
+AC_SUBST(NAME)
+AC_MSG_RESULT(${NAME} ${VERSION})
+dnl -----------------------------------------------------------------------
+dnl Checks for programs.
+dnl -----------------------------------------------------------------------
+AC_PROG_YACC
+AC_PROG_LEX
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_CHECK_PROGS(TAR, tar tar)
+AC_CHECK_PROGS(RM, rm rm)
+AC_CHECK_PROGS(MV, mv mv)
+AC_CHECK_PROGS(DIFF, diff diff)
+AC_CHECK_PROGS(GZIP, gzip gzip)
+dnl -----------------------------------------------------------------------
+dnl gcc has -Wall and -MM options
+dnl -----------------------------------------------------------------------
+AC_MSG_CHECKING(for ${CC} -M flags)
+if test "$GCC" = "yes"; then
+CC_M="-MM"
+else
+CC_M="-M"
+fi
+AC_MSG_RESULT(${CC_M})
+AC_SUBST(CC_M)
+AC_MSG_CHECKING(for ${CC} -Wall -pedantic flags)
+if test "$GCC" = "yes" ; then
+CFLAGS="${CFLAGS} -Wall -pedantic"
+fi
+AC_MSG_RESULT(${CFLAGS}) 
+dnl -----------------------------------------------------------------------
+dnl Checks for header files.
+dnl -----------------------------------------------------------------------
+AC_HEADER_STDC
+AC_CHECK_HEADERS(unistd.h stdlib.h string.h)
+dnl -----------------------------------------------------------------------
+dnl Checks for typedefs, structures, and compiler characteristics.
+dnl -----------------------------------------------------------------------
+AC_C_CONST
+dnl -----------------------------------------------------------------------
+dnl Checks for library functions.
+dnl -----------------------------------------------------------------------
+AC_CHECK_FUNCS(strdup bsearch qsort memcpy)
+dnl -----------------------------------------------------------------------
+dnl create Makefile and version.h from *.in files
+dnl -----------------------------------------------------------------------
+AC_OUTPUT(Makefile version.h)
