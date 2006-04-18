@@ -283,7 +283,7 @@ print a short usage information to stderr.
 
 .SH INPUT FORMAT
 .B concepts 
-reads its input from stdin if no extra
+reads its input from stdin if no 
 .I file
 is specified. The following lines show an example:
 .PP
