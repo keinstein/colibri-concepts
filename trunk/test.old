@@ -1,0 +1,68 @@
+   objects[000]:	empty.o
+attributes[000]:	
+   objects[001]:	dir.o getloadavg.o
+attributes[001]:	config.h
+   objects[002]:	
+attributes[002]:	getopt.h
+   objects[003]:	getopt.o
+attributes[003]:	
+   objects[004]:	getopt1.o
+attributes[004]:	getopt1.c
+   objects[005]:	remote-stub.o
+attributes[005]:	commands.h
+   objects[006]:	signame.o
+attributes[006]:	signame.h
+   objects[007]:	
+attributes[007]:	file.h
+   objects[008]:	misc.o
+attributes[008]:	dep.h
+   objects[009]:	ar.o
+attributes[009]:	
+   objects[010]:	
+attributes[010]:	variable.h
+   objects[011]:	vpath.o
+attributes[011]:	
+   objects[012]:	
+attributes[012]:	
+   objects[013]:	
+attributes[013]:	
+   objects[014]:	
+attributes[014]:	
+   objects[015]:	
+attributes[015]:	job.h
+   objects[016]:	
+attributes[016]:	
+   objects[017]:	
+attributes[017]:	
+   objects[018]:	function.o
+attributes[018]:	
+   objects[019]:	
+attributes[019]:	
+   objects[020]:	
+attributes[020]:	
+   objects[021]:	expand.o
+attributes[021]:	
+   objects[022]:	
+attributes[022]:	
+   objects[023]:	file.o variable.o
+attributes[023]:	
+   objects[024]:	implicit.o
+attributes[024]:	rule.h
+   objects[025]:	default.o
+attributes[025]:	
+   objects[026]:	rule.o
+attributes[026]:	
+   objects[027]:	
+attributes[027]:	
+   objects[028]:	remake.o
+attributes[028]:	
+   objects[029]:	read.o
+attributes[029]:	glob.h
+   objects[030]:	job.o
+attributes[030]:	
+   objects[031]:	commands.o
+attributes[031]:	
+   objects[032]:	main.o
+attributes[032]:	
+   objects[033]:	
+attributes[033]:	
