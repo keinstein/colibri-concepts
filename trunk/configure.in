@@ -28,7 +28,7 @@ dnl VERSION
 dnl -----------------------------------------------------------------------
 AC_MSG_CHECKING(for name and version number)
 NAME=concepts
-VERSION=0.3e
+VERSION=0.4
 dnl -----------------------------------------------------------------------
 AC_SUBST(VERSION)
 AC_SUBST(NAME)

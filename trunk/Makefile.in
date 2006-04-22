@@ -132,7 +132,7 @@ parser.c:	parser.yacc
 #
 
 Makefile:	Makefile.in configure
-		configure
+		./configure
 
 configure:	configure.in
 		autoconf
