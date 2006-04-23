@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
- $Id: README,v 1.1.1.1 1998/02/23 15:22:25 lindig Exp $
+ $Id$
 -------------------------------------------------------------------------------
 
 Description
@@ -87,7 +87,7 @@ Requirements for Installation
 -----------------------------
 
 You need a C compiler and Lex and Yacc tools. The actual configuration
-is handled through GNU autoconf so it's quite flexible. 
+is handled through GNU autoconf, so it's quite flexible. 
 
 Installation
 ------------
@@ -135,13 +135,13 @@ FTP
 
 The latest version can be found at: 
 
-		ftp.ips.cs.tu-bs.de:pub/local/softech/misc
+		http://www.st.cs.uni-sb.de/~lindig/
 
 Bugs
 ----
 
 Please report bugs, improvements, ports to other platforms and all
-forms of comments to Christian Lindig <lindig@ips.cs.tu-bs.de>.
+forms of comments to Christian Lindig <lindig@gmail.com>
 
 Copyleft
 --------
@@ -223,6 +223,11 @@ History
 	
 	  Objects may have an empty list of associated attributes.
 
+0.3e -> 0.4
+        * Fixed compiler warning.
+        * New command line flag -d for Dot output.
+        * Fixed spelling and wording in documentation.
+        
 See Also
 --------
 
@@ -243,15 +248,12 @@ Applications of concept analysis:
 M. Krone, G. Snelting: On the Inference of Configuration Structures from
 Source Code. Proc. 16th International Conference on Software
 Engineering,   May 1994, IEEE Comp. Soc. Press, S. 49 - 57. 
-ftp://ftp.ips.cs.tu-bs.de/pub/local/softech/papers/infer-config.ps.gz
 
 Author
 ------
 
-Christian  Lindig  (lindig@ips.cs.tu-bs.de),  
-Institute  for Programming Languages 
-Technical University of Braunschweig
-D-38106 Braunschweig
-Germany.
-
-
+Christian  Lindig  (lindig@gmail.com)
+Saarland University
+Computer Science Department
+D-66123 Saarbruecken
+Germany
