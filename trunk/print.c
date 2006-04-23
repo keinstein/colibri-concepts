@@ -69,7 +69,7 @@
  */
 
 static VOID PrintSet _ANSI_ARGS_((FILE *f, Set *set, char **names, 
-				  char sep, int *col));
+				  int sep, int *col));
 static VOID PrintConcept _ANSI_ARGS_((FILE *f, char *fmt, int *col, 
 				      ContextLattice *lattice, int id));
 static VOID PrintFormatted _ANSI_ARGS_((FILE *f, char *str, 
@@ -102,12 +102,12 @@ PrintStrOder (s1,s2)
  * supplied the intergers will be printed instaed */
 
 static VOID
-PrintSet (f,set,names,sep,col) 
+PrintSet (f,set,names,isep,col) 
 
 	FILE *f;		/* output goes here */
 	Set *set;		/* set to print */
 	char **names;		/* array of set member names*/
-	char sep;		/* seperator between elements */
+	int isep;		/* seperator between elements */
 	int *col;		/* actual output column */
 	
 
@@ -117,6 +117,7 @@ PrintSet (f,set,names,sep,col)
 	char **sorted_names;    
 	char **sorted;
 	int size;
+        char sep = (char) isep;
 
 	size = SetSize(set);
 	sorted_names = (char**) malloc (sizeof(char*) * size);
@@ -326,19 +327,19 @@ PrintConcept (f,fmt,col, lattice, id)
 			break;
 		case 'O':
 			set = &c->objects; /* all objects */
-			PrintSet (f,set,lattice->objects,sep,col);
+			PrintSet (f,set,lattice->objects,(int)sep,col);
 			break;
 		case 'A':
 			set = &c->attributes; /* all attributes */
-			PrintSet (f,set,lattice->attributes,sep,col);
+			PrintSet (f,set,lattice->attributes,(int)sep,col);
 			break;
 		case 'o':
 			set = &c->obj; /* new objects */
-			PrintSet (f,set,lattice->objects,sep,col);
+			PrintSet (f,set,lattice->objects,(int)sep,col);
 			break;
 		case 'a':
 			set = &c->atr; /* all attributes */
-			PrintSet (f,set,lattice->attributes,sep,col);
+			PrintSet (f,set,lattice->attributes,(int)sep,col);
 			break;
 		case '+':
 			*col = 1; /* enable line breaking */
@@ -351,11 +352,11 @@ PrintConcept (f,fmt,col, lattice, id)
 			break;
 		case '<':
 			set = &c->closure ; /* all subconcepts */
-			PrintSet (f,set,(char**)NULL,sep,col);
+			PrintSet (f,set,(char**)NULL,(int)sep,col);
 			break;
 		case '>':
 			set = &c->superclos ; /* all superconcepts */
-			PrintSet (f,set,(char**)NULL,sep,col);
+			PrintSet (f,set,(char**)NULL,(int)sep,col);
 			break;
 		case 'n':
 			PrintFormatted (f,"\n",1,col);
@@ -387,7 +388,6 @@ PrintDot (lattice,out)
 	int sub;		/* subconcept index */
 	Concept *concept;	/* general concept */
 	int i;			/* counter */
-	int obj,atr;		/* object and attribute in set */
         int objs, attrs;        /* number of objects and attributes */
         double diameter, area;
 	
@@ -623,7 +623,7 @@ PrintRelatedAttributes(f,fmt,rel,obj,atr,col,id)
 		case 'A':
 		case 'a':
 			set = RelObj(rel,id); /* all attributes */
-			PrintSet (f,set,atr,sep,col);
+			PrintSet (f,set,atr,(int)sep,col);
 			break;
 		case '+':
 			*col = 1; /* enable line breaking */
@@ -671,3 +671,4 @@ VOID PrintRelation (f,fmt,rel,obj,atr)
 		PrintRelatedAttributes (f,fmt,rel,obj,atr,&col,o);
 	}
 }
+
