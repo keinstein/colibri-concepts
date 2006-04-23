@@ -155,6 +155,7 @@ distclean:	clean
 		$(RM) concepts config.h config.log config.status
 		$(RM) Makefile config.cache
 		$(RM) -r autom4te.cache
+		$(RM) configure.scan autoscan.log
 
 test:		concepts test.in test.old
 		@./concepts -c -o test.new test.in 
