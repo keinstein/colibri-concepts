@@ -65,7 +65,7 @@ dnl -----------------------------------------------------------------------
 dnl Checks for header files.
 dnl -----------------------------------------------------------------------
 AC_HEADER_STDC
-AC_CHECK_HEADERS(unistd.h stdlib.h string.h)
+AC_CHECK_HEADERS(unistd.h stdlib.h string.h math.h malloc.h limits.h)
 dnl -----------------------------------------------------------------------
 dnl Checks for typedefs, structures, and compiler characteristics.
 dnl -----------------------------------------------------------------------
@@ -73,7 +73,8 @@ AC_C_CONST
 dnl -----------------------------------------------------------------------
 dnl Checks for library functions.
 dnl -----------------------------------------------------------------------
-AC_CHECK_FUNCS(strdup bsearch qsort memcpy)
+AC_CHECK_FUNCS(strdup bsearch qsort memcpy sqrt)
+AC_FUNC_MALLOC
 dnl -----------------------------------------------------------------------
 dnl create Makefile and version.h from *.in files
 dnl -----------------------------------------------------------------------
