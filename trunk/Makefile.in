@@ -103,7 +103,7 @@ OBJS =		concept.o hash.o list.o main.o panic.o print.o\
 
 DISTFILES =	README INSTALL COPYING Makefile.in scanner.lex parser.yacc\
 		concepts.man test.in test.old install.sh\
-		configure configure.in config.h.in $(SRCS) $(HDRS) doc\
+		configure configure.in config.h.in $(SRCS) $(HDRS) doc/*\
 		config.h Makefile version.h version.h.in
 
 #
@@ -151,11 +151,6 @@ tags:		$(SRCS)
 clean:		
 		$(RM) $(OBJS) scanner.c parser.c parser.h Makefile.bak
 
-distclean:	clean
-		$(RM) concepts config.h config.log config.status
-		$(RM) Makefile config.cache
-		$(RM) -r autom4te.cache
-		$(RM) configure.scan autoscan.log
 
 test:		concepts test.in test.old
 		@./concepts -c -o test.new test.in 
