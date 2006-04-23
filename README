@@ -102,7 +102,7 @@ An input file consisting of 200 object with each object having 5
 attributes is processed in about 8 sec (SparcStation ELC) resulting in
 a concept lattice of 581 nodes. 
 
-The PostScript file doc/time.ps contains a graph which shows some
+The  file doc/time.pdf contains a graph which shows some
 execution times for various input.
 
 Quick Test
