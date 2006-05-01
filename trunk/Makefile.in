@@ -1,6 +1,6 @@
 # -*- Indented-Text -*-
 # ----------------------------------------------------------------------------
-# $Id: Makefile.in,v 1.1.1.1 1998/02/23 15:22:25 lindig Exp $
+# $Id$
 # ----------------------------------------------------------------------------
 
 # CONCEPTS
@@ -65,7 +65,7 @@ DEPEND =	$(CC) @CC_M@
 # Installation
 # ---------------------------------------------------------------------------
 
-prefix =	/usr/local
+prefix =	@prefix@
 exec_prefix =	$(prefix)
 
 bindir =	$(exec_prefix)/bin
@@ -141,9 +141,15 @@ configure:	configure.in
 # Phony Targets
 # ---------------------------------------------------------------------------
 
-install:	concepts concepts.man
-		$(INSTALL_PROGRAM) concepts $(bindir)/$(binprefix)
+install:	concepts concepts.man $(bindir) $(man1dir)
+		$(INSTALL_PROGRAM) concepts $(bindir)
 		$(INSTALL_DATA) concepts.man $(man1dir)/concepts$(man1ext)
+
+$(bindir):
+		mkdir -p $@
+
+$(man1dir):
+		mkdir -p $@
 
 tags:		$(SRCS)
 		etags $(SRCS)
