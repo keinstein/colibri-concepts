@@ -1,5 +1,5 @@
 .\"
-.\" $Id: concepts.man,v 1.1.1.1 1998/02/23 15:22:25 lindig Exp $
+.\" $Id$
 .\"
 .\" CONCEPTS
 .\" Copyright (C) 1994 Technical University of Braunschweig, Germany
@@ -39,23 +39,23 @@ concepts \- compute concept lattice from relation
 .SH SYNOPSIS
 .B concepts
 [
-.B -o 
+.B \-o 
 .I file
 ] [
-.B -f 
+.B \-f 
 .I format
 ] 
-.B -c 
+.B \-c 
 | 
-.B -g 
+.B \-g 
 | 
-.B -G
+.B \-G
 | 
-.B -d
+.B \-d
 |
-.B -a 
+.B \-a 
 | 
-.B -s 
+.B \-s 
 [
 .I file
 ]
@@ -73,10 +73,10 @@ The input is read either from stdin or from a
 output is written to stdout or to a 
 .I file 
 specified by the
-.B -o 
+.B \-o 
 option.  The format of the output is controlled by a format string
 supplied by option
-.B -f 
+.B \-f 
 . Beside all concepts, 
 .I concepts(1) 
 can compute the arrow relation
@@ -90,15 +90,15 @@ input to print the structure of the concept lattice.
 
 .SH OPTIONS
 .TP
-.B -c
+.B \-c
 Calculate all concepts and write them to the 
 .I file 
 specified by
-.B -o
+.B \-o
 or to stdout otherwise. The output format is controlled by the 
 .I format
 string supplied by 
-.B -f.
+.B \-f.
 If no such format string is given the default format string 
 .B objects[%i]:%t%o%nattributes[%i]:%t%a%n
 is used. The following format flags are valid in conjunction with this
@@ -167,15 +167,15 @@ Output a tab.
 .RE
 
 .TP
-.B -f
+.B \-f
 Write output in a format according to
 .I format. 
 The meaning of 
 .I format
 depends on the flags it is used with. See the description for options
-.B -c
+.B \-c
 and
-.B -a.
+.B \-a.
 In general it is inspired from the printf() format
 string.  If no format string is specified a default string is
 used. Any character from the format string different from
@@ -184,17 +184,17 @@ is copied verbatim to the output.
 
 
 .TP
-.B -a
+.B \-a
 Objects and attributes from the input may be upward-arrow and/or
 downward-arrow-related. This option calculates both relations and
 emits them in a format according to the string supplied to
-.B -f.
+.B \-f.
 First the upward arrow relation is reported and then the downward
 arrow relation. The format string specifies the appearance of an
 object and its related attributes; the default format string is
 .B %O: %A;%n. 
 The following format flags (supplied to 
-.B -f)
+.B \-f)
 flags exist:
 
 .RS
@@ -262,12 +262,12 @@ the numbers used by the output of
 .TP
 .B \-G
 same as
-.B -g
+.B \-g
 but concepts are labeled with objects and attributes spelled out. This
 is suitable only for small lattices.
 
 .TP
-.B -d
+.B \-d
 emit lattice in dot(1) format. Each concept is represented by a circle
 whose area is proportional to ``size'' of the concept. A concept's size
 is the number of objects times the number of attributes.
