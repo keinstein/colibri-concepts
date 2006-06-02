@@ -331,9 +331,7 @@ Graphplace is a graph placement filter with postscript features and
 was written by Jos van Eijndhoven (jos@es.ele.tue.nl).
 
 .SH AUTHOR
-Christian Lindig (lindig@ips.cs.tu-bs.de), Institute for Programming
-Languages, Technical University of Braunschweig, D-38106 Braunschweig,
-Germany.
+Christian Lindig <lindig@cs.uni-sb.de>, http://www.cs.uni-sb.de/~lindig.
 
 .SH SEE ALSO
 graphplace(1), dot(1)
@@ -345,5 +343,7 @@ Mannheim, Germany
 .PP
 Bernhard Ganter and Rudolf Wille: Formale Begriffsanalyse --
 Mathematische Grundlagen, Springer, 1996.
+.PP
+Formal Concept Analysis : Mathematical Foundations by Bernhard Ganter, Rudolf Wille, C. Franzke, Springer, 1998.
 
 
