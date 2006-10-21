@@ -421,7 +421,7 @@ PrintDot (lattice,out)
                                     fprintf (out,"\\n");
                     } 
 
-                    fprintf (out, "\"\\n%d %s]\n",objs, 
+                    fprintf (out, "\\n%d %s\"]\n",objs, 
                             objs == 1 ? "location" : "locations");
                 }    
                     
