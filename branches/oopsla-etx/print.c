@@ -1,6 +1,6 @@
 
 /*
- * $Id: print.c,v 1.3 1998/02/25 16:22:07 lindig Exp $
+ * $Id$
  *
  * CONCEPTS
  * Copyright (C) 1994 Technical University of Braunschweig, Germany
@@ -387,8 +387,9 @@ PrintDot (lattice,out)
 	Set *subcset;	 	/* subconcepts of a given set */
 	int sub;		/* subconcept index */
 	Concept *concept;	/* general concept */
-	int i;			/* counter */
+	int i;		        /* counter */
         int objs, attrs;        /* number of objects and attributes */
+        int attr;               /* individual attribute */
         double diameter, area;
 	
 	/* header */
@@ -410,8 +411,19 @@ PrintDot (lattice,out)
 		fprintf (out, "node%d ",i);
                 if (attrs == 0 || objs == 0) 
                     fprintf (out,"[shape=circle, style=filled, label=\"%d\"]\n",i); 
-                else
-                    fprintf (out, "[shape=circle,style=filled,objs=%d,attrs=%d,fixedsize=true,width=%3.1f,label=\"%d\"]\n",objs,attrs,diameter,i);
+                else {
+                    fprintf (out,"[shape=circle,style=filled,objs=%d,attrs=%d,fixedsize=true,width=%3.1f,label=\"",objs,attrs,diameter);
+                    attr = SetFirst (&concept->attributes);
+                    while (attr != -1) {
+                            fprintf (out,"%s",lattice->attributes[attr]);
+                            attr = SetNext (&concept->attributes,attr);
+                            if (attr != -1)
+                                    fprintf (out,"\\n");
+                    } 
+
+                    fprintf (out, "\"\\n%d %s]\n",objs, 
+                            objs == 1 ? "location" : "locations");
+                }    
                     
         }
 	
