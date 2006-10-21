@@ -1,0 +1,349 @@
+.\"
+.\" $Id$
+.\"
+.\" CONCEPTS
+.\" Copyright (C) 1994 Technical University of Braunschweig, Germany
+.\" Written by Christian Lindig (lindig@ips.cs.tu-bs.de)
+.\" 
+.\" This program is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2 of the License, or
+.\" (at your option) any later version.
+.\" 
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\" 
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software
+.\" Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+.\"
+.\" ----------------------------------------------------------------------
+.\" typeset examples in fixed size font as indented paragraph
+.de Ex
+.sp
+.RS
+.nf
+.ft C
+..
+.de Xe
+.RE
+.sp
+.fi
+..
+.\" -------------------------------------------------------------------------
+.TH CONCEPTS 1 "May 1995"
+.SH NAME
+concepts \- compute concept lattice from relation
+.SH SYNOPSIS
+.B concepts
+[
+.B \-o 
+.I file
+] [
+.B \-f 
+.I format
+] 
+.B \-c 
+| 
+.B \-g 
+| 
+.B \-G
+| 
+.B \-d
+|
+.B \-a 
+| 
+.B \-s 
+[
+.I file
+]
+
+.SH DESCRIPTION
+.I Concepts(1)
+calculates a lattice of concepts from a binary relation and emits
+the result in a user-specified format. Concept lattices are also known
+as Galois lattices. The relation associates 
+.I objects 
+with 
+.I attributes. 
+The input is read either from stdin or from a
+.I file; 
+output is written to stdout or to a 
+.I file 
+specified by the
+.B \-o 
+option.  The format of the output is controlled by a format string
+supplied by option
+.B \-f 
+. Beside all concepts, 
+.I concepts(1) 
+can compute the arrow relation
+over the input, the number of concepts, and can create output suitable
+for 
+.I graphplace(1)
+and
+.I dot(1)
+input to print the structure of the concept lattice.
+
+
+.SH OPTIONS
+.TP
+.B \-c
+Calculate all concepts and write them to the 
+.I file 
+specified by
+.B \-o
+or to stdout otherwise. The output format is controlled by the 
+.I format
+string supplied by 
+.B \-f.
+If no such format string is given the default format string 
+.B objects[%i]:%t%o%nattributes[%i]:%t%a%n
+is used. The following format flags are valid in conjunction with this
+option: 
+.RS
+.TP
+.B %i	
+is replaced by the number of the actual concept.
+.TP
+.B %O	
+is replaced by the list of objects belonging to the actual concept. Each
+element is delimited by the delimiter as specified by
+.B %:
+.TP
+.B %A 
+is replaced by the list of attributes belonging to the actual concept. Each
+element is delimited by the delimiter as specified by
+.B %:
+.TP
+.B %o
+is replaced by the list of objects introduced by the actual concept. Each
+element is delimited by the delimiter as specified by
+.B %:
+.TP
+.B %a
+is replaced by the list of attributes introduced by the actual concept. Each
+element is delimited by the delimiter as specified by
+.B %:
+.TP
+.B %<
+is replaced by the list of numbers of all concepts which are subconcepts
+of the actual concept. Each
+element is delimited by the delimiter as specified by
+.B %:
+.TP
+.B %>
+is replaced by the list of numbers of all concepts which are superconcepts
+of the actual concept. Each
+element is delimited by the delimiter as specified by
+.B %:
+.TP
+.B %:c
+set the delimiter for list elements to 
+.I c.
+Default is the space character.
+.TP 
+.B %+
+Line breaking on. With this flag set a heuristic line breaking is
+enabled. Line breaking inserts newlines when a line becomes longer
+than 65 characters. Newlines are not inserted in the middle of an
+object or attribute but may occur between any two characters of the
+format string. By default line breaking is on.
+.TP
+.B %-
+Switch line breaking off.
+.TP
+.B %%
+Output a single 
+.B %.
+.TP
+.B %n
+Output a newline.
+.TP
+.B %t
+Output a tab.
+.RE
+
+.TP
+.B \-f
+Write output in a format according to
+.I format. 
+The meaning of 
+.I format
+depends on the flags it is used with. See the description for options
+.B \-c
+and
+.B \-a.
+In general it is inspired from the printf() format
+string.  If no format string is specified a default string is
+used. Any character from the format string different from
+.B % 
+is copied verbatim to the output. 
+
+
+.TP
+.B \-a
+Objects and attributes from the input may be upward-arrow and/or
+downward-arrow-related. This option calculates both relations and
+emits them in a format according to the string supplied to
+.B \-f.
+First the upward arrow relation is reported and then the downward
+arrow relation. The format string specifies the appearance of an
+object and its related attributes; the default format string is
+.B %O: %A;%n. 
+The following format flags (supplied to 
+.B \-f)
+flags exist:
+
+.RS
+.TP
+.B %i
+is replaced by the number of the actual object.
+.TP
+.B %O
+The name of the actual object.
+.B %:
+.TP
+.B %A 
+is replaced by the list of attributes related to the actual object. Each
+element is delimited by the delimiter as specified by
+.B %:
+.TP
+.B %o
+Same as 
+.B %O
+.TP
+.B %a
+Same as
+.B %A
+.TP
+.B %:c
+set the delimiter for list elements to 
+.I c.
+Default is the space character.
+.TP 
+.B %+
+Switch line breaking on. 
+Line breaking inserts newlines when a line becomes longer
+than 65 characters. Newlines are not inserted in the middle of an
+object or attribute but may occur between any two characters of the
+format string. By default line breaking is on.
+.TP
+.B %-
+Switch line breaking off.
+.TP
+.B %%
+Output a single 
+.B %.
+.TP
+.B %n
+Output a newline.
+.TP
+.B %t
+Output a tab.
+.RE
+
+.TP
+.B \-s
+Do not compute the concept lattice but only count the number of
+concepts and report them.
+
+.TP
+.B \-g 
+generate output for
+.I graphplace(1).
+This permits to generate a PostScript representation of the
+lattice. Each concept is labeled with a number which corresponds to
+the numbers used by the output of 
+.B \-c.
+
+.TP
+.B \-G
+same as
+.B \-g
+but concepts are labeled with objects and attributes spelled out. This
+is suitable only for small lattices.
+
+.TP
+.B \-d
+emit lattice in dot(1) format. Each concept is represented by a circle
+whose area is proportional to ``size'' of the concept. A concept's size
+is the number of objects times the number of attributes.
+.TP
+.B \-o
+write output not to stdout but to 
+.I file
+as specified by this option.
+
+.TP
+.B \-h
+print a short usage information to stderr.
+
+.SH INPUT FORMAT
+.B concepts 
+reads its input from stdin if no 
+.I file
+is specified. The following lines show an example:
+.PP
+.Ex
+% input to concepts
+% comments start with a percent sign 
+% and go up to the end of line
+
+obj.1: atr_1 atr_2 atr_3 ;
+obj.2: atr_3 atr_4               % continued on next line
+       atr_5;
+obj.2: atr_1;                    % also permitted
+obj.3: atr_2 atr_5;
+.Xe
+.PP
+The input relates objects with their attributes, each of them given by
+identifiers. Object and attributes are delimited by a colon and the
+list of attributes end with a semicolon. Identifiers may start with an
+upper or lower case letter followed by letters, numbers, dots or
+underscores Comments start with a percent sign and lead up to the end
+of line.  Tabs and empty lines are also permitted. The formal grammar
+of the input is as follows:
+
+.Ex
+start -> context
+context -> object
+context -> context object
+object -> IDENT ":" seqAttribute ";"
+object -> IDENT ":" ";"
+seqAttribute -> IDENT
+seqAttribute -> seqAttribute IDENT
+.Xe 
+
+.SH BUGS
+Error messages should be improved.
+
+.SH NO WARRANTY
+This program is distributed in the hope that it will be useful, but
+without any warranty; without even the implied warranty of
+merchantability or fitness for a particular purpose.  See the GNU
+General Public License for more details.
+
+.SH NOTES
+Graphplace is a graph placement filter with postscript features and
+was written by Jos van Eijndhoven (jos@es.ele.tue.nl).
+
+.SH AUTHOR
+Christian Lindig <lindig@cs.uni-sb.de>, http://www.cs.uni-sb.de/~lindig.
+
+.SH SEE ALSO
+graphplace(1), dot(1)
+.PP
+Ganther, R. Wille, K.E. Wolff (Eds.),
+.I Beitraege zur Begriffsanalyse 
+(Contributions to Concept Analysis), 1987, BI-Wissenschafts-Verlag,
+Mannheim, Germany
+.PP
+Bernhard Ganter and Rudolf Wille: Formale Begriffsanalyse --
+Mathematische Grundlagen, Springer, 1996.
+.PP
+Formal Concept Analysis : Mathematical Foundations by Bernhard Ganter, Rudolf Wille, C. Franzke, Springer, 1998.
+
+
