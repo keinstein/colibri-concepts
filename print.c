@@ -1,6 +1,6 @@
 
 /*
- * $Id: print.c,v 1.3 1998/02/25 16:22:07 lindig Exp $
+ * $Id$
  *
  * CONCEPTS
  * Copyright (C) 1994 Technical University of Braunschweig, Germany
@@ -537,19 +537,27 @@ PrintStat (context,out)
 	Relation rel;
 	char **objstr,**atrstr;	/* all names of obj and atr */
 	int obj,atr;
-	int count ;
+	int count, pairs;
+        float density;
 	int i;
 
 	/* create Relation from Context */
 
 	ContextToRel(context,&rel,&objstr,&atrstr,&obj,&atr);
 	
-	/* calculate concepts */
+	/* calculate stats */
+	count   = ConceptNumber(&rel);
+        pairs   = RelSize(&rel);
+        density = (float) pairs /((float)obj * (float)atr);
 
-	count = ConceptNumber(&rel);
+        /* print out results */
+	fprintf(out,"number of objects:    %i\n",obj);
+	fprintf(out,"number of attributes: %i\n",atr);
+	fprintf(out,"number of concepts:   %i\n",count);
+	fprintf(out,"number of pairs:      %i\n",pairs);
+	fprintf(out,"density:              %5.3f\n",density);
 
-	/* free memory */
-	
+        /* free memory */
 	RelDelete (&rel);
 
 	for (i=0;i<obj;i++) {
@@ -561,13 +569,6 @@ PrintStat (context,out)
 		free(atrstr[i]);
 	}
 	free ((char*)atrstr);
-
-	/* print out results */
-
-	fprintf(out,"number of objects:    %i\n",obj);
-	fprintf(out,"number of attributes: %i\n",atr);
-	fprintf(out,"number of concepts:   %i\n",count);
-
 }
 
 /*

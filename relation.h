@@ -1,7 +1,7 @@
 
 
 /*
- * $Id: relation.h,v 1.1.1.1 1998/02/23 15:22:27 lindig Exp $
+ * $Id$
  *
  * CONCEPTS
  * Copyright (C) 1994 Technical University of Braunschweig, Germany
@@ -56,5 +56,6 @@ extern int RelRelated _ANSI_ARGS_((Relation *rel, int atr, int obj));
 extern Set *RelObj _ANSI_ARGS_((Relation *rel, int obj));
 extern Set *RelAtr _ANSI_ARGS_((Relation *rel, int atr));
 extern VOID RelPrint _ANSI_ARGS_((Relation *rel));
+extern int  RelSize _ANSI_ARGS_((Relation *rel));
 
 #endif /* ! __RELATION_H__ */
