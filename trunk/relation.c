@@ -1,6 +1,6 @@
 
 /*
- * $Id: relation.c,v 1.1.1.1 1998/02/23 15:22:26 lindig Exp $
+ * $Id$
  *
  * CONCEPTS
  * Copyright (C) 1994 Technical University of Braunschweig, Germany
@@ -208,6 +208,25 @@ RelAtr (rel,atr)
 	return (&rel->atr[atr]);
 }
 
+/* 
+ * RelSize
+ * return the size of the relation. This is the number of pairs (x,y)
+ * that are related.
+ */
+
+int
+RelSize (rel)
+        Relation *rel;
+{
+        int i;
+        int pairs;
+
+        pairs = 0;
+        for (i=0;i<rel->maxatr;i++) {
+            pairs += SetSize(&rel->atr[i]);
+        }
+        return pairs;
+}
 
 /*
  * RelPrint
