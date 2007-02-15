@@ -13,6 +13,9 @@ If you are curious, you can also take a look at the Unix-style ManualPage.
 
 Concepts is implemented in C and should compile on most Unix platforms. It comes with a ./configure script and a manual page. You can download the source code from this Subversion repository:
 
+{{{
+svn checkout http://colibri-concepts.googlecode.com/svn/trunk/ colibri-concepts
+}}}
 
 To compile it, change to directory `trunk` or `stable`  and execute the following commands: 
 {{{
