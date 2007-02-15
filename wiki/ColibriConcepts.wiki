@@ -105,8 +105,7 @@ Concepts is distributed under the GNU General Public License (source:concepts/tr
 
 = Author =
 
-Christian Lindig <lindig at cs.uni-sb.de> http://www.cs.uni-sb.de/~lindig/
-
+Christian Lindig <lindig at gmail dot com> http://www.cs.uni-sb.de/~lindig/
 
 
 
