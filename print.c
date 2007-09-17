@@ -376,9 +376,10 @@ PrintConcept (f,fmt,col, lattice, id)
  */
 
 VOID 
-PrintDot (lattice,out)
+PrintDot (lattice,fmt,out)
 
 	ContextLattice *lattice; 	/* eveything we need to know */
+	char		*fmt;		/* format string */
 	FILE *out;			/* output stream */
 
 {
@@ -390,6 +391,9 @@ PrintDot (lattice,out)
 	int i;			/* counter */
         int objs, attrs;        /* number of objects and attributes */
         double diameter, area;
+	int col;		/* output column */
+
+	col = 0 ;		/* line breaking disabled */
 	
 	/* header */
         fprintf (out,"digraph lattice {\n");
@@ -408,11 +412,16 @@ PrintDot (lattice,out)
                 diameter = sqrt(area/PI)/ 3;
                 
 		fprintf (out, "node%d ",i);
-                if (attrs == 0 || objs == 0) 
-                    fprintf (out,"[shape=circle, style=filled, label=\"%d\"]\n",i); 
-                else
-                    fprintf (out, "[shape=circle,style=filled,objs=%d,attrs=%d,fixedsize=true,width=%3.1f,label=\"%d\"]\n",objs,attrs,diameter,i);
-                    
+                fprintf (out,"[shape=%s, style=filled,",
+				fmt ? "Mrecord" : "circle");
+                if (fmt == NULL && (attrs != 0 || objs != 0))
+                    fprintf (out, "objs=%d,attrs=%d,fixedsize=true,width=%3.1f,",objs,attrs,diameter);
+		fprintf (out, "label=\"");
+                if (fmt == NULL)
+		    fprintf (out, "%d",i);
+		else
+		    PrintConcept (out,fmt,&col,lattice,i);
+		fprintf (out, "\"]\n");
         }
 	
         /* print out all edges */

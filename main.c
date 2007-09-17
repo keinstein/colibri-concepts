@@ -1,6 +1,6 @@
 
 /* 
- * $Id: main.c,v 1.3 1998/02/25 16:22:06 lindig Exp $
+ * $Id$
  *
  * CONCEPTS
  * Copyright (C) 1994 Technical University of Braunschweig, Germany
@@ -292,7 +292,7 @@ doit (format,what)
 		break;
 	case DOT:
 		lattice = ContextConcepts (context);
-		PrintDot (lattice,out);
+		PrintDot (lattice,format,out);
 		ContextLatticeDelete (lattice);
 		break;
         case SIZE:
