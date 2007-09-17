@@ -1,6 +1,6 @@
 
 /*
- * $Id: print.h,v 1.1.1.1 1998/02/23 15:22:27 lindig Exp $
+ * $Id$
  *
  * CONCEPTS
  * Copyright (C) 1994 Technical University of Braunschweig, Germany
@@ -31,7 +31,8 @@ extern VOID PrintLattice _ANSI_ARGS_((FILE *f, char *fmt,
 extern VOID PrintGraph _ANSI_ARGS_((ContextLattice *lattice, 
 				    int print_names,
 				    FILE *out));
-extern VOID PrintDot _ANSI_ARGS_((ContextLattice *lattice, FILE *out));
+extern VOID PrintDot _ANSI_ARGS_((ContextLattice *lattice, char *fmt,
+				  FILE *out));
 extern VOID PrintStat _ANSI_ARGS_((Context *context, FILE *out));
 extern VOID PrintArrows _ANSI_ARGS_((ContextLattice *lattice, 
 				   Context *context, FILE *out));
