@@ -264,6 +264,14 @@ PrintCheck (fmt)
 				error = "\"%:\" must be followed by character";
 			}
 			break;
+		case '#':
+			if (*++p == '\0') {
+				error = "\"%#\" must be followed by character";
+			}
+			if (strchr("OAoa<>", *p) == NULL) {
+				error = "\"%#\" with unknown set specifier";
+			}
+			break;
 
 		default:
 			error = "unknown format flag";
@@ -290,6 +298,8 @@ PrintCheck (fmt)
  * %a   %:x seperated list of attribs introduced by the current concept
  * %<   %:x separated list of all subconcepts
  * %>   %:x seperated list of all superconcepts
+ * %#X  instead of outputting the list, output the size of the list (X can be
+ *      any one of 'O', 'A', 'o', 'a', '<' or '>')
  * %n	Newline
  * %t	Tab
  *
@@ -363,6 +373,33 @@ PrintConcept (f,fmt,col, lattice, id)
 			break;
 		case 't':
 			PrintFormatted (f,"\t",1,col);
+			break;
+		case '#':
+			switch (*++p) {
+			case 'O':
+				set = &c->objects; /* all objects */
+				break;
+			case 'A':
+				set = &c->attributes; /* all attributes */
+				break;
+			case 'o':
+				set = &c->obj; /* new objects */
+				break;
+			case 'a':
+				set = &c->atr; /* all attributes */
+				break;
+			case '>':
+				set = &c->closure ; /* all subconcepts */
+				break;
+			case '<':
+				set = &c->superclos ; /* all superconcepts */
+				break;
+			default:
+				PrintFormatted(f,p-1,2,col);
+				continue;
+			}
+			sprintf (buf,"%i",SetSize(set));
+			PrintFormatted(f,buf,strlen(buf),col);
 			break;
 		default:
 			PrintFormatted (f,p,1,col);

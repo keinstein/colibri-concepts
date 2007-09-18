@@ -180,27 +180,25 @@ depend:		$(SRCS) scanner.c parser.c
 		$(DEPEND) $(SRCS) scanner.c parser.c >> Makefile)
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
-
-concept.o: concept.c config.h defines.h panic.h list.h set.h\
-	   relation.h concept.h
+concept.o: concept.c config.h defines.h panic.h list.h set.h relation.h \
+  concept.h
 hash.o: hash.c config.h defines.h panic.h hash.h
 list.o: list.c config.h defines.h panic.h list.h
-main.o: main.c config.h defines.h version.h panic.h list.h hash.h\
-	set.h relation.h   concept.h context.h arrow.h input.h print.h
+main.o: main.c config.h defines.h version.h panic.h list.h hash.h set.h \
+  relation.h concept.h context.h arrow.h input.h print.h
 panic.o: panic.c config.h defines.h panic.h
-print.o: print.c config.h defines.h panic.h set.h list.h hash.h\
-	 relation.h concept.h context.h arrow.h print.h
+print.o: print.c config.h defines.h panic.h set.h list.h hash.h \
+  relation.h concept.h context.h arrow.h print.h
 relation.o: relation.c config.h defines.h panic.h set.h relation.h
 set.o: set.c config.h defines.h panic.h set.h
-context.o: context.c config.h defines.h panic.h list.h hash.h \
-	   set.h relation.h concept.h context.h 
+context.o: context.c config.h defines.h panic.h list.h hash.h set.h \
+  relation.h concept.h context.h
 input.o: input.c config.h defines.h panic.h hash.h list.h set.h \
-	 relation.h   concept.h context.h input.h
+  relation.h concept.h context.h input.h
 arrow.o: arrow.c config.h defines.h panic.h list.h hash.h set.h \
-	 relation.h   concept.h context.h arrow.h
+  relation.h concept.h context.h arrow.h
 lib.o: lib.c config.h defines.h lib.h
-scanner.o: scanner.c config.h defines.h panic.h hash.h list.h \
-	   set.h relation.h   concept.h context.h input.h parser.h
-parser.o: parser.c config.h defines.h list.h set.h hash.h\
-	  relation.h concept.h context.h input.h
-
+scanner.o: scanner.c config.h defines.h panic.h hash.h list.h set.h \
+  relation.h concept.h context.h input.h parser.h
+parser.o: parser.c config.h defines.h list.h set.h hash.h relation.h \
+  concept.h context.h input.h

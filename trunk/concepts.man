@@ -140,11 +140,19 @@ of the actual concept. Each
 element is delimited by the delimiter as specified by
 .B %:
 .TP
+.B %:
+.TP
 .B %:c
 set the delimiter for list elements to 
 .I c.
 Default is the space character.
 .TP 
+.B %#
+.TP
+.B %#X
+Instead of printing the list, print the number (for example, %#O would
+output the number of objects).
+.TP
 .B %+
 Line breaking on. With this flag set a heuristic line breaking is
 enabled. Line breaking inserts newlines when a line becomes longer
