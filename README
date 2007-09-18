@@ -261,7 +261,7 @@ Contributors
 ------------
 
 Johannes Schindelin <ohannes.Schindelin@gmx.de>: honor the -f format
-flag when emitting dot (-d) output.
+flag when emitting dot (-d) output; new format option %#.
 
 
 Author
