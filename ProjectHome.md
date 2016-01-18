@@ -1,0 +1,3 @@
+Concepts is a command line tool for concept analysis. Concept Analysis helps to analyze the relation between objects with assigned attributes by computing a so-called concept lattice. The concept lattice identifies sets of objects and attributes that are synonymous for each other. For a more details, please see the Wiki.
+
+Because it is implemented in C, this tool compiles almost everywhere. However, if you are interested in more recent developments and better algorithms, consider using [Colibri/Java](http://code.google.com/p/colibri-java/) and [Colibri/ML](http://code.google.com/p/colibri-ml/). Both use a more efficient algorithm; in addition, this algorithm permits to explore only part of a concept lattice which is most useful when working with huge lattices.
